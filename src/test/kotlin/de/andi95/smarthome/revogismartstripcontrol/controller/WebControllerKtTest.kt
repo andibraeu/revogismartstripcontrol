@@ -1,5 +1,6 @@
 package de.andi95.smarthome.revogismartstripcontrol.controller
 
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -16,7 +17,7 @@ class WebControllerKtTest(@Autowired val restTemplate: TestRestTemplate) {
     @Test
     fun indexController() {
         val entity = restTemplate.getForEntity<String>("/")
-        assert(entity.statusCode.equals(HttpStatus.OK))
-        assert(entity.body!!.contains("<h1>Revogi Smart Strip Control</h1>"))
+        assertThat(entity.statusCode).isEqualTo(HttpStatus.OK)
+        assertThat(entity.body).contains("<h1>Revogi Smart Strip Control</h1>")
     }
 }
