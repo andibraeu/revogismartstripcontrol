@@ -26,7 +26,7 @@ class UdpSenderService {
         socket.broadcast = true
         socket.soTimeout = 2
         socket.send(packet)
-        val receivedBuf = ByteArray(100)
+        val receivedBuf = ByteArray(512)
         val answer = DatagramPacket(receivedBuf, receivedBuf.size)
         socket.receive(answer)
         if (answer.length > 0) {
