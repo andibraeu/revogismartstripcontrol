@@ -1,18 +1,16 @@
 package de.andi95.smarthome.revogismartstripcontrol.service
 
-import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import org.mockito.InjectMocks
-
+import org.junit.jupiter.api.assertThrows
+import java.net.SocketTimeoutException
 
 class UdpSenderServiceTest {
 
-    @InjectMocks
-    lateinit var udpSenderService: UdpSenderService
+    var udpSenderService: UdpSenderService = UdpSenderService()
 
     @Test
     fun indexController() {
-        assertThat(udpSenderService.sendUpdDatagram("akldjfakldfjal")).isEqualTo("")
+        assertThrows<SocketTimeoutException> { udpSenderService.sendUpdDatagram("We expect no response here") }
     }
 
 }
