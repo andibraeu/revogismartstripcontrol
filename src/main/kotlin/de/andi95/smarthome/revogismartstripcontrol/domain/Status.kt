@@ -1,7 +1,7 @@
 package de.andi95.smarthome.revogismartstripcontrol.domain
 
 data class Status(
-        var switch: ArrayList<Int>,
-        var watt: ArrayList<Int>,
-        var amp: ArrayList<Int>
+        var switch: List<Int> = emptyList<Int>(),
+        var watt: List<Int> = emptyList<Int>(),
+        var amp: List<Int> = emptyList<Int>()
 )

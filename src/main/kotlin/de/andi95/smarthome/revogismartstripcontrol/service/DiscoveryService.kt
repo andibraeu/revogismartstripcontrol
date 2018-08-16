@@ -27,11 +27,11 @@ class DiscoveryService(private val udpSenderService: UdpSenderService) {
     }
 
     private fun deserializeString(response: String): DiscoveryRawResponse {
-        try {
-            return mapper.readValue(response)
+        return try {
+            mapper.readValue(response)
         } catch (e: JsonParseException) {
             log.warn("Could not parse string \"{}\" to DiscoveryRawResponse", response)
-            return DiscoveryRawResponse(503, DiscoveryResponse())
+            DiscoveryRawResponse(503, DiscoveryResponse())
         }
     }
 }
