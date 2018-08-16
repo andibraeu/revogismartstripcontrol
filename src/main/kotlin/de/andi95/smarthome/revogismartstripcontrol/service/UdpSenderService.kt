@@ -12,9 +12,9 @@ import java.util.stream.Collectors
 @Service
 class UdpSenderService {
 
-    val log = LoggerFactory.getLogger(UdpSenderService::class.java)!!
+    private val log = LoggerFactory.getLogger(UdpSenderService::class.java)!!
 
-    val socket = DatagramSocket()
+    private val socket = DatagramSocket()
 
     private val revogiPort = 8888
 
@@ -24,7 +24,7 @@ class UdpSenderService {
         val buf = content.toByteArray(Charset.defaultCharset())
         val packet = DatagramPacket(buf, buf.size, broadcastAddresses?.first(), revogiPort)
         socket.broadcast = true
-        socket.soTimeout = 2
+        socket.soTimeout = 3
         socket.send(packet)
         val receivedBuf = ByteArray(512)
         val answer = DatagramPacket(receivedBuf, receivedBuf.size)
