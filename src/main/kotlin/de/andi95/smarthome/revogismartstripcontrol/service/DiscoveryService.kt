@@ -14,8 +14,8 @@ class DiscoveryService(private val udpSenderService: UdpSenderService) {
     private val mapper = jacksonObjectMapper()
 
     fun disoverSmartStrips(): List<DiscoveryResponse> {
-        val response = udpSenderService.sendUpdDatagram(UDP_DISCOVERY_QUERY)
-        val discoveryRawResponse = mapper.readValue<DiscoveryRawResponse>(response)
+        val response = udpSenderService.broadcastUpdDatagram(UDP_DISCOVERY_QUERY)
+        val discoveryRawResponse = mapper.readValue<DiscoveryRawResponse>(response[0])
         return listOf(discoveryRawResponse.data)
     }
 }

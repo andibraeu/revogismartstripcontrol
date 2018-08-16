@@ -7,7 +7,6 @@ import java.net.DatagramSocket
 import java.net.InetAddress
 import java.net.NetworkInterface
 import java.nio.charset.Charset
-import java.util.stream.Collectors
 
 @Service
 class UdpSenderService {
@@ -18,30 +17,41 @@ class UdpSenderService {
 
     private val revogiPort = 8888
 
-    fun sendUpdDatagram(content: String): String {
+    fun broadcastUpdDatagram(content: String): List<String> {
         val broadcastAddresses = getBroadcastAddresses()
-        log.info("Using address {}", broadcastAddresses?.first())
+        return broadcastAddresses
+                .map { address -> sendBroadcastMessage(content, address) }
+                .flatten()
+
+    }
+
+    private fun sendBroadcastMessage(content: String, broadcastAddress: InetAddress): List<String> {
+        log.info("Using address {}", broadcastAddress)
         val buf = content.toByteArray(Charset.defaultCharset())
-        val packet = DatagramPacket(buf, buf.size, broadcastAddresses?.first(), revogiPort)
+        val packet = DatagramPacket(buf, buf.size, broadcastAddress, revogiPort)
         socket.broadcast = true
         socket.soTimeout = 3
         socket.send(packet)
+        return receiveResponses()
+    }
+
+    private fun receiveResponses(): MutableList<String> {
+        val list = mutableListOf<String>()
         val receivedBuf = ByteArray(512)
         val answer = DatagramPacket(receivedBuf, receivedBuf.size)
         socket.receive(answer)
         if (answer.length > 0) {
-            return String(answer.data, 0, answer.length)
+            list.add(String(answer.data, 0, answer.length))
         }
-        return "received no answer"
+        return list
     }
 
-    private fun getBroadcastAddresses(): List<InetAddress>? {
-        return NetworkInterface.getNetworkInterfaces().toList().stream()
+    private fun getBroadcastAddresses(): List<InetAddress> {
+        return NetworkInterface.getNetworkInterfaces().toList()
                 .filter { networkInterface -> networkInterface.isUp }
-                .flatMap { networkInterface -> networkInterface.interfaceAddresses.stream() }
+                .flatMap { networkInterface -> networkInterface.interfaceAddresses }
                 .filter { address -> address.broadcast != null }
                 .map { address -> address.broadcast }
-                .collect(Collectors.toList())
     }
 
 }
