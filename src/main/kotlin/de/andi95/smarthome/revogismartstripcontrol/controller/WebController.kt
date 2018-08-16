@@ -15,7 +15,7 @@ class WebController(private val discoveryService: DiscoveryService) {
     @GetMapping("/")
     fun indexController(model: Model): String {
         model["title"] = "hello"
-        log.info(discoveryService.disoverSmartStrips().get(0).toString())
+        log.info(discoveryService.disoverSmartStrips().toString())
         return "index"
     }
 }

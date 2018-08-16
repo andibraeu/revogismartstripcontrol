@@ -2,11 +2,10 @@ package de.andi95.smarthome.revogismartstripcontrol.service
 
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
-import java.net.DatagramPacket
-import java.net.DatagramSocket
-import java.net.InetAddress
-import java.net.NetworkInterface
+import java.net.*
 import java.nio.charset.Charset
+
+private const val MAX_TIMEOUT_COUNT = 3
 
 @Service
 class UdpSenderService {
@@ -37,12 +36,24 @@ class UdpSenderService {
 
     private fun receiveResponses(): MutableList<String> {
         val list = mutableListOf<String>()
-        val receivedBuf = ByteArray(512)
-        val answer = DatagramPacket(receivedBuf, receivedBuf.size)
-        socket.receive(answer)
-        if (answer.length > 0) {
-            list.add(String(answer.data, 0, answer.length))
+        var timeoutCounter = 0
+        while (timeoutCounter < MAX_TIMEOUT_COUNT) {
+            val receivedBuf = ByteArray(512)
+            val answer = DatagramPacket(receivedBuf, receivedBuf.size)
+            try {
+                socket.receive(answer)
+            }
+            catch (e: SocketTimeoutException) {
+                timeoutCounter++
+                log.warn("Socket receive time no. {}", timeoutCounter)
+                continue
+            }
+
+            if (answer.length > 0) {
+                list.add(String(answer.data, 0, answer.length))
+            }
         }
+
         return list
     }
 
