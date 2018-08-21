@@ -41,6 +41,7 @@ test {
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 
@@ -51,6 +52,7 @@ dependencies {
     compile('com.fasterxml.jackson.module:jackson-module-kotlin')
     compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     compile("org.jetbrains.kotlin:kotlin-reflect")
+    compile("org.jetbrains.kotlinx:kotlinx-html-jvm:0.6.10")
     compileOnly('org.projectlombok:lombok')
     testCompile('org.springframework.boot:spring-boot-starter-test') {
         exclude module: 'junit'

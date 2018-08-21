@@ -18,6 +18,6 @@ class WebControllerKtTest(@Autowired val restTemplate: TestRestTemplate) {
     fun indexController() {
         val entity = restTemplate.getForEntity<String>("/")
         assertThat(entity.statusCode).isEqualTo(HttpStatus.OK)
-        assertThat(entity.body).contains("<h1>Revogi Smart Strip Control</h1>")
+        assertThat(entity.body).contains("<h1>Revogi Smartstrip Control</h1>")
     }
 }
