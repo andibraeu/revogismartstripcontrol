@@ -1,6 +1,5 @@
 package de.andi95.smarthome.revogismartstripcontrol.service
 
-import jdk.nashorn.internal.ir.annotations.Ignore
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers.any
@@ -34,20 +33,23 @@ class UdpSenderServiceTest {
     }
 
     @Test
-    @Ignore
     fun testOneAnswer() {
         // given
-        val receivedBuf = "test".toByteArray()
-        val answer = DatagramPacket(receivedBuf, receivedBuf.size)
+        val receivedBuf = "valid answer".toByteArray()
         ReflectionTestUtils.setField(udpSenderService, "socket", datagramSocket)
-        `when`(datagramSocket.receive(any())).thenThrow(SocketTimeoutException::class.java)
+        `when`(datagramSocket.receive(any())).thenAnswer {
+            val callback = it.arguments[0] as DatagramPacket
+            callback.data = receivedBuf
+            null
+        }.thenThrow(SocketTimeoutException::class.java)
+
 
         // when
         val list = udpSenderService.broadcastUpdDatagram("send something")
 
         // then
-        assertThat(list).isEmpty()
-        verify(datagramSocket, times(3)).receive(any())
+        assertThat(list).contains("valid answer")
+        verify(datagramSocket, times(4)).receive(any())
     }
 
 }
