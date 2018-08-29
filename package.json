@@ -2,9 +2,9 @@
   "name": "revogi-smart-strip-control",
   "license": "MIT",
   "scripts": {
-    "bundle": "parcel build src/main/js/index.js --no-cache --out-dir out/production/classes/static/dist --out-file bundle --public-url /dist",
+    "bundle": "parcel build src/main/js/index.js --no-cache --out-dir out/production/resources/static/dist --out-file bundle --public-url /dist",
     "postbundle": "date-now --format='DD.MM.YYYY-HH:mm:ss (A)' | cowthink $1",
-    "watch": "parcel watch src/main/js/index.js --out-dir out/production/classes/static/dist --out-file bundle --public-url /dist",
+    "watch": "parcel watch src/main/js/index.js --out-dir out/production/resources/static/dist --out-file bundle --public-url /dist",
     "postwatch": "date-now --format='DD.MM.YYYY-HH:mm:ss (A)' | cowthink $1"
   },
   "dependencies": {

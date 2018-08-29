@@ -6,13 +6,13 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            someValue: "",
-            otherValue: ""
+            someValue: "21341234",
+            otherValue: "123"
         }
     }
 
     componentWillMount() {
-        fetch("/data")
+        fetch("/discover")
             .then(response => response.json())
             .then((data) => {
                 this.setState(data)
@@ -21,7 +21,7 @@ class App extends Component {
 
     render() {
         return (
-            <div className="App">
+            <div className="App" align="right">
             <HelloWorld
         someValue={this.state.someValue}
         otherValue={this.state.otherValue}
