@@ -3,13 +3,11 @@ package de.andi95.smarthome.revogismartstripcontrol.service
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.times
-import org.mockito.Mockito.verify
+import org.mockito.Mockito.*
 import org.springframework.test.util.ReflectionTestUtils
 import java.net.DatagramPacket
 import java.net.DatagramSocket
+import java.net.NetworkInterface
 import java.net.SocketTimeoutException
 
 class UdpSenderServiceTest {
@@ -17,6 +15,11 @@ class UdpSenderServiceTest {
     private var udpSenderService: UdpSenderService = UdpSenderService()
 
     private var datagramSocket = mock(DatagramSocket::class.java)
+
+    private var numberOfInterfaces = NetworkInterface.getNetworkInterfaces().toList()
+            .filter { networkInterface -> networkInterface.isUp }
+            .flatMap { networkInterface -> networkInterface.interfaceAddresses }
+            .filter { address -> address.broadcast != null }.size
 
     @Test
     fun testTimeout() {
@@ -29,7 +32,7 @@ class UdpSenderServiceTest {
 
         // then
         assertThat(list).isEmpty()
-        verify(datagramSocket, times(3)).receive(any())
+        verify(datagramSocket, times(3 * numberOfInterfaces)).receive(any())
     }
 
     @Test
@@ -49,7 +52,7 @@ class UdpSenderServiceTest {
 
         // then
         assertThat(list).contains("valid answer")
-        verify(datagramSocket, times(4)).receive(any())
+        verify(datagramSocket, times(1 + (3 * numberOfInterfaces))).receive(any())
     }
 
 }
