@@ -6,8 +6,8 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            someValue: "21341234",
-            otherValue: "123"
+            someValue: "",
+            otherValue: ""
         }
     }
 

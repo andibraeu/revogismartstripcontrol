@@ -20,11 +20,7 @@ class RestController(private val discoveryService: DiscoveryService,
     @GetMapping("/discover")
     fun discovery(): ResponseEntity<List<DiscoveryResponse>> {
         val disoverSmartStrips = discoveryService.disoverSmartStrips()
-        return if (disoverSmartStrips.isNotEmpty()) {
-            ResponseEntity.ok(disoverSmartStrips)
-        } else {
-            ResponseEntity.notFound().build()
-        }
+        return ResponseEntity.ok(disoverSmartStrips)
     }
 
     @GetMapping("/status/{serialNumber}")
