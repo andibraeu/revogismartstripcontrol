@@ -1,9 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import App from "./App.js";
+import SmartStripApp from "./components/SmartStripApp.js";
 
 ReactDOM.render(
-<App/>,
+<SmartStripApp/>,
     document.getElementById("root")
 );
