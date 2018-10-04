@@ -8,7 +8,7 @@ import java.net.NetworkInterface
 import java.net.SocketTimeoutException
 import java.nio.charset.Charset
 
-private const val MAX_TIMEOUT_COUNT = 3
+private const val MAX_TIMEOUT_COUNT = 2
 
 @Service
 class UdpSenderService(private val datagramSocketWrapper: DatagramSocketWrapper) {
@@ -48,6 +48,7 @@ class UdpSenderService(private val datagramSocketWrapper: DatagramSocketWrapper)
             catch (e: SocketTimeoutException) {
                 timeoutCounter++
                 log.warn("Socket receive time no. {}", timeoutCounter)
+                Thread.sleep(timeoutCounter * 800L)
                 continue
             }
 
