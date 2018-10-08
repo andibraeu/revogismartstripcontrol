@@ -1,14 +1,14 @@
 package de.andi95.smarthome.revogismartstripcontrol.service
 
 import de.andi95.smarthome.revogismartstripcontrol.domain.DiscoveryResponse
+import io.mockk.every
+import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.mock
 
 internal class DiscoveryServiceTest {
 
-    private val udpSenderService = mock(UdpSenderService::class.java)
+    private val udpSenderService: UdpSenderService = mockk()
 
     private val discoveryService = DiscoveryService(udpSenderService)
 
@@ -17,7 +17,7 @@ internal class DiscoveryServiceTest {
         // given
         val discoveryResponse = DiscoveryResponse("1234", "reg", "sak", "Strip", "mac", "5.11")
         val discoveryString = listOf("{\"response\":0,\"data\":{\"sn\":\"1234\",\"regid\":\"reg\",\"sak\":\"sak\",\"name\":\"Strip\",\"mac\":\"mac\",\"ver\":\"5.11\"}}")
-        `when`(udpSenderService.broadcastUpdDatagram("00sw=all,,,;")).thenReturn(discoveryString)
+        every { udpSenderService.broadcastUpdDatagram("00sw=all,,,;") } returns discoveryString
 
         // when
         val discoverSmartStrips = discoveryService.disoverSmartStrips()
@@ -31,7 +31,7 @@ internal class DiscoveryServiceTest {
     fun invalidUdpResponse() {
         // given
         val discoveryString = listOf("something invalid")
-        `when`(udpSenderService.broadcastUpdDatagram("00sw=all,,,;")).thenReturn(discoveryString)
+        every { udpSenderService.broadcastUpdDatagram("00sw=all,,,;") } returns discoveryString
 
         // when
         val discoverSmartStrips = discoveryService.disoverSmartStrips()

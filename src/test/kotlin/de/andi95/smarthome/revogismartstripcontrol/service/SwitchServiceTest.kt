@@ -1,23 +1,22 @@
 package de.andi95.smarthome.revogismartstripcontrol.service
 
 import de.andi95.smarthome.revogismartstripcontrol.domain.SwitchResponse
+import io.mockk.every
+import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.mock
 
 internal class SwitchServiceTest {
 
-    private val udpSenderService = mock(UdpSenderService::class.java)
-
+    private val udpSenderService: UdpSenderService = mockk()
     private val switchService = SwitchService(udpSenderService)
 
     @Test
     fun getStatusSuccesfully() {
         // given
         val response = listOf("V3{\"response\":20,\"code\":200}")
-        `when`(udpSenderService.broadcastUpdDatagram("V3{\"sn\":\"serial\", \"cmd\": 20, \"port\": 1, \"state\": 1}")).thenReturn(response)
+        every { udpSenderService.broadcastUpdDatagram("V3{\"sn\":\"serial\", \"cmd\": 20, \"port\": 1, \"state\": 1}") } returns response
 
         // when
         val switchResponse: SwitchResponse? = switchService.switchPort("serial", 1, 1)
@@ -30,7 +29,7 @@ internal class SwitchServiceTest {
     fun invalidUdpResponse() {
         // given
         val statusString = listOf("something invalid")
-        `when`(udpSenderService.broadcastUpdDatagram("V3{\"sn\":\"serial\", \"cmd\": 90}")).thenReturn(statusString)
+        every { udpSenderService.broadcastUpdDatagram("V3{\"sn\":\"serial\", \"cmd\": 20, \"port\": 1, \"state\": 1}") } returns statusString
 
         // when
         val switchResponse: SwitchResponse? = switchService.switchPort("serial", 1, 1)
