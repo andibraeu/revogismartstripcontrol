@@ -3,13 +3,13 @@
   "license": "MIT",
   "scripts": {
     "bundle": "parcel build src/main/js/index.js --no-cache --out-dir out/production/resources/static/dist --out-file bundle --public-url /dist",
-    "postbundle": "date-now --format='DD.MM.YYYY-HH:mm:ss (A)' | cowthink $1",
-    "watch": "parcel watch src/main/js/index.js --out-dir out/production/resources/static/dist --out-file bundle --public-url /dist",
-    "postwatch": "date-now --format='DD.MM.YYYY-HH:mm:ss (A)' | cowthink $1"
+    "watch": "parcel watch src/main/js/index.js --out-dir out/production/resources/static/dist --out-file bundle --public-url /dist"
   },
   "dependencies": {
     "react": "16.4.2",
-    "react-dom": "16.4.2"
+    "react-dom": "16.4.2",
+    "reactstrap": "~6.5.0",
+    "bootstrap": "~4.1.3"
   },
   "devDependencies": {
     "autoprefixer": "9.1.1",

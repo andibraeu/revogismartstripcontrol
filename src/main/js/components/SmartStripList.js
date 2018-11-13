@@ -1,11 +1,12 @@
 import React, {Component} from "react";
 import SmartStrip from "./SmartStrip";
+import {Row} from 'reactstrap';
 
 class SmartStripList extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {strips: []};
     }
 
     componentDidMount() {
@@ -19,18 +20,12 @@ class SmartStripList extends Component {
     }
 
     render() {
-        const list = [];
-        for (let stripsKey in this.state.strips) {
-            let strip = this.state.strips[stripsKey];
-            list.push(
-                 <SmartStrip
-                     strip={strip}
-                 />)
-        }
         return (
-            <div className="smartstriplist">
-                {list}
-            </div>
+            <Row>
+                {this.state.strips.map((strip) => {
+                    return <SmartStrip strip = {strip}/>
+                })}
+            </Row>
         );
     }
 }
