@@ -29,7 +29,7 @@ class SmartStrip extends Component {
                         return <SmartPlug plug = {plug}/>
                     })}
                 </Row>
-            </span>
+                </span>
         );
     }
 
@@ -37,8 +37,9 @@ class SmartStrip extends Component {
         const plugs = [];
         if (this.state.stripstatus.switch) {
             this.state.stripstatus.switch.map((plug, index) => {
+                let plugnumber = index + 1;
                 plugs.push({
-                    index: index,
+                    index: plugnumber,
                     switch: plug,
                     watt: this.state.stripstatus.watt[index],
                     amp: this.state.stripstatus.amp[index]
