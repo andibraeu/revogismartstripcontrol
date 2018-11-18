@@ -9,6 +9,8 @@ import de.andi95.smarthome.revogismartstripcontrol.service.SwitchService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
@@ -19,8 +21,8 @@ class RestController(private val discoveryService: DiscoveryService,
 
     @GetMapping("/discover")
     fun discovery(): ResponseEntity<List<DiscoveryResponse>> {
-        val disoverSmartStrips = discoveryService.disoverSmartStrips()
-        return ResponseEntity.ok(disoverSmartStrips)
+        val discoverSmartStrips = discoveryService.disoverSmartStrips()
+        return ResponseEntity.ok(discoverSmartStrips)
     }
 
     @GetMapping("/status/{serialNumber}")
@@ -33,7 +35,7 @@ class RestController(private val discoveryService: DiscoveryService,
         }
     }
 
-    @GetMapping("/switch/{serialNumber}/{port}")
+    @RequestMapping("/switch/{serialNumber}/{port}", method = [RequestMethod.PUT, RequestMethod.GET])
     fun switch(@PathVariable serialNumber: String,
                @PathVariable port: Int,
                @RequestParam state: Int): ResponseEntity<SwitchResponse> {
